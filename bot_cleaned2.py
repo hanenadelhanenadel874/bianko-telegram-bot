@@ -1,13 +1,13 @@
-import gspread
-from telegram import Update, InputMediaPhoto
-from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
-from oauth2client.service_account import ServiceAccountCredentials
+import os
+import json
+from google.oauth2.service_account import Credentials
 
 # Telegram Token
 TOKEN = "8209077922:AAHGQzOji8MuEDra50-NLuWr_yeBR1_sUro"
 # Google Sheets setup
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+creds_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+creds = Credentials.from_service_account_info(creds_info, scopes=scope)
 client = gspread.authorize(creds)
 sheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1O_xtxhWxRcg-rKU7cHODjoxro_B7rIL30SReqa5SDBw").worksheet("Table 1")
 
